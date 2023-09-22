@@ -33,6 +33,9 @@ export const Info = styled.div`
       gap: 0.5rem;
 
       color: ${(props) => props.theme.blue};
+      background: none;
+      border: none;
+      cursor: pointer;
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -65,5 +68,27 @@ export const Info = styled.div`
 `
 export const Details = styled.div`
   width: 54rem;
-  padding: 2rem 2.5rem;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  color: ${(props) => props.theme['base-text']};
+  font-size: 1rem;
+  font-weight: 400;
+
+  strong {
+    font-weight: 700;
+  }
+
+  a {
+    color: ${(props) => props.theme.blue};
+    text-decoration-line: underline;
+  }
+
+  pre {
+    padding: 1rem;
+    border-radius: 2px;
+    background: ${(props) => props.theme['base-post']};
+  }
 `

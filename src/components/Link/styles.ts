@@ -11,8 +11,13 @@ export const LinksContainer = styled.a`
   text-transform: uppercase;
   text-decoration: none;
   grid-area: link;
+  cursor: pointer;
 
   color: ${(props) => props.theme.blue};
+
+  img {
+    margin-bottom: 0.2rem;
+  }
 
   svg {
     width: 0.75rem;
@@ -22,6 +27,6 @@ export const LinksContainer = styled.a`
   }
 
   &:hover {
-    border-bottom: 1px solid ${(props) => props.theme.blue};
+    text-decoration: underline;
   }
 `

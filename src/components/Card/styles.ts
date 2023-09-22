@@ -1,7 +1,10 @@
+import { Link } from 'react-router-dom'
 import { styled } from 'styled-components'
 
-export const CardContainer = styled.div`
+export const CardContainer = styled(Link)`
   width: 26rem;
+  cursor: pointer;
+  text-decoration: none;
 
   border: 2px solid transparent;
   background-color: ${(props) => props.theme['base-post']};
@@ -17,7 +20,7 @@ export const CardContainer = styled.div`
   grid-template-areas:
     'h1 span'
     'p p';
-  grid-template-columns: 17.69rem auto;
+  grid-template-columns: 16rem auto;
   grid-template-rows: 4rem 7rem;
   row-gap: 1.25rem;
 

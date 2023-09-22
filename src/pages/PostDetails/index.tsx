@@ -4,48 +4,110 @@ import arrowLeft from '../../assets/icons/arrow-left.svg'
 import githubIcon from '../../assets/icons/github.svg'
 import calendarIcon from '../../assets/icons/calendar.svg'
 import commentIcon from '../../assets/icons/comment.svg'
+import { useEffect, useState } from 'react'
+import { api } from '../../lib/axios'
+import { useNavigate, useParams } from 'react-router-dom'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import { formatDistanceToNowStrict } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
+interface IssueDetailsProps {
+  body: string
+  comments: number
+  user: string
+  created_at: Date
+  title: string
+  url: string
+}
 
 export function PostDetails() {
+  const [issueDetails, setIssueDetails] = useState<IssueDetailsProps>({
+    body: "",
+    comments: 0,
+    created_at: new Date,
+    title: "",
+    user: "",
+    url: "",
+  })
+  const { issueId } = useParams()
+  const navigate = useNavigate()
+  const id = issueId ? issueId : "0"
+  const username = 'betobala'
+  const repo = 'github-blog'
+
+  function handleBack() {
+    navigate(-1)
+  }
+  
+  useEffect(() => {
+    async function fetchIssueDetails(
+      repo: string,
+      id: string,
+      username: string,
+    ) {
+      const response = await api.get(
+        `/repos/${username}/${repo}/issues/${id}`,
+      )
+      console.log(response.data)
+      setIssueDetails({ 
+        body: response.data.body,
+        comments: response.data.comments,
+        user: response.data.user.login,
+        title: response.data.title,
+        created_at: response.data.created_at,
+        url: response.data.html_url,
+      })
+    }
+    fetchIssueDetails(repo, id, username)
+  }, [id])
   return (
     <PostDetailsContainer>
+
       <Info>
+
         <div className="links">
-          <a id="return-link">
+          <button id="return-link" onClick={() => handleBack()}>
             <img src={arrowLeft} alt="" />
             <span>Voltar</span>
-          </a>
-          <Link title="ver no github" />
+          </button>
+          <Link title="ver no github" href={issueDetails.url} target='_blank'/>
         </div>
-        <h1 id="name">JavaScript data types and data structures</h1>
+
+        <h1 id="name">{issueDetails.title}</h1>
+
         <div className="infos">
+
           <div className="username">
             <img src={githubIcon} alt="" />
-            <span>cameronwll</span>
+            <span>{issueDetails.user}</span>
           </div>
+
           <div className="date">
             <img src={calendarIcon} alt="" />
-            <span>Há 1 dia</span>
+            <span>{formatDistanceToNowStrict(new Date(issueDetails.created_at), {
+          addSuffix: true,
+          locale: ptBR,
+        })}</span>
           </div>
+
           <div className="comments">
             <img src={commentIcon} alt="" />
-            <span>5 comentários</span>
+            <span>{`${issueDetails.comments} comentários`}</span>
           </div>
+
         </div>
       </Info>
 
       <Details>
-        <p>
-          Programming languages all have built-in data structures, but these
-          often differ from one language to another. This article attempts to
-          list the built-in data structures available in JavaScript and what
-          properties they have. These can be used to build other data
-          structures. Wherever possible, comparisons with other languages are
-          drawn. Dynamic typing JavaScript is a loosely typed and dynamic
-          language. Variables in JavaScript are not directly associated with any
-          particular value type, and any variable can be assigned (and
-          re-assigned) values of all types:
-        </p>
+
+        <ReactMarkdown
+          children={issueDetails.body}
+          remarkPlugins={[remarkGfm]}
+        ></ReactMarkdown>
+
       </Details>
+      
     </PostDetailsContainer>
   )
 }

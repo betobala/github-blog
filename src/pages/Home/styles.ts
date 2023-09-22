@@ -13,12 +13,12 @@ export const ProfileCard = styled.div`
   margin-bottom: 4.5rem;
   width: 54rem;
   display: grid;
-  grid-template-columns: 10rem 1fr 3rem;
+  grid-template-columns: 10rem 1fr 4rem;
   grid-template-areas:
     'avatar name link'
     'avatar description description'
     'avatar infos infos';
-  column-gap: 2rem;
+  column-gap: 1.5rem;
 
   background: ${(props) => props.theme['base-profile']};
   box-shadow: 0px 2px 28px 0px rgba(0, 0, 0, 0.2);
@@ -37,6 +37,8 @@ export const ProfileCard = styled.div`
     font-size: 1.5rem;
     font-weight: 700;
     color: ${(props) => props.theme['base-title']};
+
+    margin-top: 0.85rem;
   }
 
   #description {
